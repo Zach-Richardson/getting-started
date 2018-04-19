@@ -1,0 +1,35 @@
+{
+  "name": "forsta-messaging-bot",
+  "version": "0.7.0",
+  "description": "Forsta Getting Started",
+  "engines": {
+    "node": "8"
+  },
+  "repository": "ForstaLabs/getting-started",
+  "keywords": [
+    "forsta",
+    "e-discovery"
+  ],
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ForstaLabs/getting-started/issues"
+  },
+  "homepage": "https://github.com/ForstaLabs/getting-started#readme",
+  "scripts": {
+    "start": "node server"
+  },
+  "bin": {
+    "messaging-bot": "./server/index.js"
+  },
+  "dependencies": {    
+    "bcrypt": "^1.0.3",
+    "csv-stringify": "2.0.0",
+    "express": "4.16.2",
+    "jquery": "3.2.1",
+    "jsonwebtoken": "^8.1.0",
+    "jwt-decode": "^2.2.0",
+    "librelay": "3.4.0",
+    "morgan": "1.9.0",
+    "uuid": "^3.1.0",
+  }
+}
