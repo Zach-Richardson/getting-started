@@ -1,5 +1,3 @@
-// vim: ts=4:sw=4:expandtab
-
 const crypto = require('crypto');
 
 const _stores = [];
@@ -72,13 +70,6 @@ const ttlCacheBackingStores = {
 };
 
 exports.ttl = function(expiration, func, options) {
-    /* Wrap a static function with a basic Time-To-Live cache.  The `expiration`
-     * argument controls how long cached entries should be used for future
-     * requests.  The key for a cache lookup is based on the function
-     * signature.
-     *
-     * NOTE: The function being wrapped should be static to avoid corruption.
-     */
     options = options || {};
     const ttl = expiration * 1000;
     const Store = ttlCacheBackingStores[options.store || 'memory'];

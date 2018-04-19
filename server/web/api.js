@@ -17,14 +17,11 @@ class APIHandler {
     }
 
     asyncRoute(fn, requireAuth=true) {
-        /* Add error handling for async exceptions.  Otherwise the server just hangs
-         * the request or subclasses have to do this by hand for each async routine. */
         return (req, res, next) => {
             if (requireAuth) {
                 const header = req.get('Authorization');
                 const parts = (header || '').split(' ');
                 if (!header || parts.length !== 2 || parts[0].toLowerCase() !== 'jwt') {
-                    console.log('missing authentication for this bot server request');
                     res.status(401).send({ message: 'forbidden' });
                 } else {
                     relay.storage.get('authentication', 'jwtsecret')
@@ -36,12 +33,10 @@ class APIHandler {
                                     next();
                                 });
                             } catch (err) {
-                                console.log('bad authentication for this bot server request', err);
                                 res.status(401).send({ message: 'forbidden' });
                             }
                         })
                         .catch(err => {
-                            console.log('storage error while checking authentication for this bot server request', err);
                             res.status(401).send({ message: 'forbidden' });
                         });
                 }
@@ -89,9 +84,6 @@ class OnboardAPIV1 extends APIHandler {
     }
 
     async onAuthCodeGet(req, res) {
-        /* Request authcode for an Atlas admin user.  This request should be followed
-         * by an API call to the sibling POST method using a payload of the SMS auth
-         * code sent to the user's SMS device. */
         const tag = req.params.tag;
         if (!tag) {
             res.status(412).json({
@@ -111,8 +103,6 @@ class OnboardAPIV1 extends APIHandler {
     }
 
     async onAuthCodePost(req, res) {
-        /* Complete registration using the SMS auth code that the user should have received
-         * following a call to `onAuthCodeGet`. */
         const tag = req.params.tag;
         if (!tag) {
             res.status(412).json({

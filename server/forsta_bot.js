@@ -1,5 +1,3 @@
-// vim: ts=4:sw=4:expandtab
-
 'use strict';
 
 const BotAtlasClient = require('./atlas_client');
@@ -12,10 +10,8 @@ class ForstaBot {
     async start() {
         const ourId = await relay.storage.getState('addr');
         if (!ourId) {
-            console.warn("bot is not yet registered");
             return;
         }
-        console.info("Starting message receiver for:", ourId);
         this.atlas = await BotAtlasClient.factory();
         this.getUsers = cache.ttl(60, this.atlas.getUsers.bind(this.atlas));
         this.resolveTags = cache.ttl(60, this.atlas.resolveTags.bind(this.atlas));
@@ -31,7 +27,6 @@ class ForstaBot {
 
     stop() {
         if (this.msgReceiver) {
-            console.warn("Stopping message receiver");
             this.msgReceiver.close();
             this.msgReceiver = null;
         }
@@ -43,7 +38,6 @@ class ForstaBot {
     }
 
     async onKeyChange(ev) {
-        console.warn("Auto-accepting new identity key for:", ev.addr);
         await ev.accept();
     }
 
@@ -62,7 +56,6 @@ class ForstaBot {
             }
         }
         if (!msg) {
-            console.error("Received unsupported message:", msgEnvelope);
             return;
         }
 

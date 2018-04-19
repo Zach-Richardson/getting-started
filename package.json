@@ -21,7 +21,7 @@
   "bin": {
     "messaging-bot": "./server/index.js"
   },
-  "dependencies": {    
+  "dependencies": {
     "bcrypt": "^1.0.3",
     "csv-stringify": "2.0.0",
     "express": "4.16.2",
@@ -30,6 +30,6 @@
     "jwt-decode": "^2.2.0",
     "librelay": "3.4.0",
     "morgan": "1.9.0",
-    "uuid": "^3.1.0",
+    "uuid": "^3.1.0"
   }
 }

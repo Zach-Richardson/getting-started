@@ -3,13 +3,7 @@ const relay = require("librelay");
 class BotAtlasClient extends relay.AtlasClient {
 
   static get onboardingCreatedUser() {
-    return null; // if setting up to use using an existing user during onboarding
-    
-    // return {  // if creating a new user during onboarding
-    //     first_name: "Monitor",
-    //     last_name: "Bot",
-    //     is_monitor: true
-    // };
+    return null; 
   }
 
   static get userAuthTokenDescription() {
@@ -21,7 +15,6 @@ class BotAtlasClient extends relay.AtlasClient {
       "/v1/user/" + onboardClient.userId + "/"
     );
     const creator = `@${botUser.tag.slug}:${botUser.org.slug}`;
-    console.info(`Bot onboarding performed by: ${creator}`);
     await relay.storage.putState("onboardUser", botUser.id);
     if (this.onboardingCreatedUser) {
       try {
@@ -29,13 +22,7 @@ class BotAtlasClient extends relay.AtlasClient {
           method: "POST",
           json: Object.assign({}, this.onboardingCreatedUser, { user_type: "BOT" })
         });
-        console.info(
-          `Created new ${botUser.is_monitor ? "MONITOR" : ""} bot user @${
-            botUser.tag.slug
-          }:${botUser.org.slug} <${botUser.id}>`
-        );
       } catch (e) {
-        console.error("error during creation of bot user", e);
         throw e;
       }
     }
@@ -43,31 +30,22 @@ class BotAtlasClient extends relay.AtlasClient {
       method: "POST",
       json: { userid: botUser.id, description: this.userAuthTokenDescription }
     });
-    console.info(
-      `Created UserAuthToken for bot user @${botUser.tag.slug}:${
-        botUser.org.slug
-      }`
-    );
     await relay.storage.putState("botUser", botUser.id);
     await relay.storage.putState("botUserAuthToken", result.token);
 
     const atlasClient = await this.factory();
 
     try {
-      console.log('trying to registerDevice');
       const something = await relay.registerDevice({
         name: `Bot (created by ${creator})`,
         atlasClient: atlasClient
       });
       await something.done();
-      console.log("registerDevice success");
     } catch (e) {
-      console.log("registerDevice didn't work out, trying registerAccount instead");
       await relay.registerAccount({
         name: `Bot (created by ${creator})`,
         atlasClient: atlasClient
       });
-      console.log("registerAccount success");
     }
 
     return atlasClient;
