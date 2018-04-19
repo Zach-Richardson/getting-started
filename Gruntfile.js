@@ -48,7 +48,7 @@ module.exports = function(grunt) {
     browserify: {
       dist: {
         files: {
-          'dist/static/js/main.js': ['client/scripts/main.js']
+          'dist/static/client/js/main.js': ['client/scripts/app.js']
         }
       }
     },
@@ -56,8 +56,8 @@ module.exports = function(grunt) {
     uglify: {
       my_target: {
         files: {
-          'dist/static/js/main.js': ['dist/static/js/main.js'],
-          'dist/static/js/deps.js': ['dist/static/js/deps.js']
+          'dist/static/client/js/main.js': ['dist/static/client/js/main.js'],
+          'dist/static/client/js/deps.js': ['dist/static/client/js/deps.js']
         }
       }
     },
@@ -68,7 +68,7 @@ module.exports = function(grunt) {
           "jquery/dist/jquery.slim.js",
           "lodash/core.js",
         ].map(x => add_prefix('node_modules', x)),
-        dest: `${static_dist}/js/deps.js`
+        dest: `${static_dist}/client/js/deps.js`
       },
     },
 
